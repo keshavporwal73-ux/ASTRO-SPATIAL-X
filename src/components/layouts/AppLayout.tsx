@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { AstroLogo } from '@/components/brand/AstroLogo';
 import {
   Telescope,
   Bot,
@@ -46,18 +47,10 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
       {/* Desktop Sidebar (hidden on mobile, visible on md+) */}
       <aside className="hidden md:flex flex-col w-64 shrink-0 border-r border-border/80 bg-slate-950/90 backdrop-blur-xl fixed inset-y-0 left-0 z-30">
         {/* Brand Header */}
-        <div className="h-16 flex items-center px-6 border-b border-border/80 gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center shadow-[0_0_15px_rgba(99,102,241,0.5)]">
-            <Telescope className="w-4 h-4 text-white" />
-          </div>
-          <div>
-            <span className="font-mono font-black tracking-wider text-base gradient-text-nebula">
-              ASTRO
-            </span>
-            <span className="text-[10px] font-mono text-slate-500 block uppercase tracking-widest -mt-1">
-              Observatory Lab
-            </span>
-          </div>
+        <div className="h-16 flex items-center px-4 border-b border-border/80">
+          <Link to="/" className="hover:opacity-90 transition-opacity">
+            <AstroLogo size="sm" showText={true} showTagline={false} />
+          </Link>
         </div>
 
         {/* Navigation List */}
@@ -117,14 +110,8 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="bg-slate-950 border-r border-border/80 text-slate-100 w-64 p-0">
-                <div className="h-16 flex items-center px-6 border-b border-border/80 gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center">
-                    <Telescope className="w-4 h-4 text-white" />
-                  </div>
-                  <div>
-                    <span className="font-mono font-black tracking-wider text-base text-white">ASTRO</span>
-                    <span className="text-[10px] font-mono text-slate-500 block">Observatory</span>
-                  </div>
+                <div className="h-16 flex items-center px-4 border-b border-border/80">
+                  <AstroLogo size="sm" showText={true} showTagline={false} />
                 </div>
 
                 <div className="p-3 space-y-1 font-mono text-xs">

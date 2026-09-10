@@ -118,6 +118,29 @@
   font-feature-settings: "tnum" 1, "zero" 1;
 }
 
+/* Astrodynamics & Spatial Visual Animations */
+@keyframes celestial-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-celestial-float {
+  animation: celestial-float 5s ease-in-out infinite;
+}
+
+.astro-glow-cyan {
+  box-shadow: 0 0 25px -3px rgba(6, 182, 212, 0.35);
+}
+
+.astro-glow-indigo {
+  box-shadow: 0 0 30px -4px rgba(99, 102, 241, 0.4);
+}
+
+
 .gradient-text-nebula {
   background: linear-gradient(135deg, #F1F5F9 0%, #A5B4FC 60%, #06B6D4 100%);
   -webkit-background-clip: text;

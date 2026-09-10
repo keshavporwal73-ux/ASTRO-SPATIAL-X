@@ -2,9 +2,13 @@
 
 ## 1. Application Overview
 
-**Name**: ASTRO (3D Spatial Edition)
+**Name**: ASTRO // SPATIAL-X (AI-Native Spatial Astronomy & XR Laboratory)
 
-**Description**: ASTRO is an AI-native 3D spatial astronomy laboratory platform combining conversational AI, real astronomical datasets, scientific calculations, coordinate transformations, interactive 3D visualizations, production-ready WebXR/VR support, and research tools. The platform integrates a full 3D scientific viewport with existing modules including AI Observatory, APOD, Object Explorer, Scientific Calculator, and Research Lab. The interface follows a dark cinematic NASA/scientific laboratory aesthetic with near-black deep space backgrounds, indigo/navy panels, and crisp scientific telemetry HUD, responsive across desktop, tablet, and mobile.
+**Tagline**: ASK. CALCULATE. INVESTIGATE. EXPLORE.
+
+**Description**: ASTRO // SPATIAL-X is an AI-native 3D spatial astronomy laboratory platform combining conversational AI, real astronomical datasets, scientific calculations, coordinate transformations, interactive 3D visualizations, production-ready WebXR/VR support, and research tools. The platform integrates a full 3D scientific viewport with existing modules including AI Observatory, APOD, Object Explorer, Scientific Calculator, and Research Lab. The interface follows a dark cinematic NASA/scientific laboratory aesthetic with near-black deep space backgrounds, indigo/navy panels, and crisp scientific telemetry HUD, responsive across desktop, tablet, and mobile.
+
+**Logo**: Animated scientific logo featuring concentric orbital rings, glowing celestial core, rotating satellite beacon, and smooth astrophysical UI animations. Logo appears across all main navigation headers, dashboard, and 3D laboratory headers.
 
 ---
 
@@ -29,7 +33,7 @@
 ### 3.1 Page Hierarchy
 
 ```
-ASTRO (3D Spatial Edition)
+ASTRO // SPATIAL-X
 ├── Home / Dashboard
 ├── 3D Observatory (Main Viewport)
 │   ├── Solar System 3D View
@@ -53,6 +57,7 @@ ASTRO (3D Spatial Edition)
 - Highlights featured discoveries and recent investigation activity
 - Navigation bar provides access to all top-level sections including 3D Observatory
 - Quick access button to enter 3D Observatory
+- Animated scientific logo with concentric orbital rings, glowing celestial core, and rotating satellite beacon displayed in header
 
 ### 3.3 3D Observatory (Main Viewport)
 
@@ -64,6 +69,7 @@ Full 3D scientific viewport rendered using Three.js WebGL. All celestial objects
 - Realistic celestial textures and shaders for bodies
 - Scientific labels and telemetry HUD overlay
 - Efficient geometry with instancing and LOD (Level of Detail) optimization
+- Animated scientific logo displayed in 3D laboratory header
 
 #### 3.3.2 WebXR/VR Mode
 - Visible ENTER VR or CONNECT VR button in 3D Observatory interface
@@ -326,6 +332,10 @@ Measurement results persist in HUD until cleared.
 - Interface responsive across desktop, tablet, and mobile devices
 - Dark cinematic NASA/scientific laboratory aesthetic with near-black deep space backgrounds, indigo/navy panels, and crisp scientific telemetry HUD
 
+### 4.14 Animated Logo Display
+- Animated scientific logo with concentric orbital rings, glowing celestial core, and rotating satellite beacon displayed across all main navigation headers, dashboard, and 3D laboratory headers
+- Smooth astrophysical UI animations integrated throughout interface
+
 ---
 
 ## 5. Exceptions and Edge Cases
@@ -351,8 +361,8 @@ Measurement results persist in HUD until cleared.
 
 ## 6. Acceptance Criteria
 
-1. User opens ASTRO and sees Home Dashboard with APOD, navigation to all modules, and quick access to 3D Observatory.
-2. User navigates to 3D Observatory, views Solar System in 3D with Sun, 8 planets, major moons, Saturn rings, and orbital paths rendered, switches camera mode to Follow and scale mode to Normalized.
+1. User opens ASTRO // SPATIAL-X and sees Home Dashboard with animated scientific logo (concentric orbital rings, glowing celestial core, rotating satellite beacon), APOD, navigation to all modules, and quick access to 3D Observatory.
+2. User navigates to 3D Observatory, views animated logo in 3D laboratory header, views Solar System in 3D with Sun, 8 planets, major moons, Saturn rings, and orbital paths rendered, switches camera mode to Follow and scale mode to Normalized.
 3. User selects a planet in 3D viewport, Object Inspector panel displays authoritative astrophysical data with evidence labels and \"DATA UNAVAILABLE\" for missing data.
 4. User clicks ENTER VR button, system detects VR hardware, starts real immersive-vr session through Three.js, enters stereo rendering mode, uses controller ray selection to select object, and exits VR successfully.
 5. User opens AI Observatory, types \"focus on Mars and show its orbit\", AI responds with spatial action confirmation, 3D viewport focuses on Mars with orbital path rendered.

@@ -4,6 +4,7 @@ import { CELESTIAL_OBJECTS, APOD_RECORDS, SOLAR_SYSTEM_BODIES, EXOPLANET_CATALOG
 import { ASTRONOMY_CALCULATION_MODULES } from '@/services/astronomyEngine';
 import { InvestigationStorage } from '@/services/investigationStorage';
 import { EvidenceBadge } from '@/components/common/EvidenceBadge';
+import { AstroLogo } from '@/components/brand/AstroLogo';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -21,6 +22,7 @@ import {
   Radio,
   ExternalLink,
   ChevronRight,
+  Glasses,
 } from 'lucide-react';
 
 export const DashboardPage: React.FC = () => {
@@ -34,43 +36,49 @@ export const DashboardPage: React.FC = () => {
         <div className="absolute -right-12 -bottom-12 w-96 h-96 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
         <div className="absolute -left-12 -top-12 w-96 h-96 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 max-w-3xl space-y-4">
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="border-primary/50 text-primary bg-primary/10 px-2.5 py-0.5 text-xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse mr-1.5" />
-              Observatory Online • IAU Canonical Engine
+        <div className="relative z-10 max-w-4xl space-y-5">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Badge variant="outline" className="border-cyan-500/50 text-cyan-300 bg-cyan-950/40 px-2.5 py-0.5 text-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse mr-1.5" />
+              IAU J2000 Canonical Engine • WebXR Spatial Ready
             </Badge>
             <EvidenceBadge status="OBSERVED" size="sm" />
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight font-sans">
-            ASTRO Deep Space Observatory
-          </h1>
+          {/* Hero Animated Logo */}
+          <div className="py-2">
+            <AstroLogo size="hero" showText={true} showTagline={true} />
+          </div>
 
-          <p className="text-sm text-slate-300 leading-relaxed font-sans">
-            AI-native astrophysics intelligence platform combining conversational domain reasoning,
+          <p className="text-sm md:text-base text-slate-300 leading-relaxed font-sans max-w-2xl">
+            AI-native astrophysics intelligence & 3D spatial observatory platform combining conversational domain reasoning,
             deterministic Keplerian & relativistic calculation engines, multi-frame coordinate transformations,
-            and interactive celestial laboratories.
+            and authentic WebXR/VR immersive celestial laboratories.
           </p>
 
           {/* Quick Action CTAs */}
           <div className="flex flex-wrap gap-3 pt-2">
-            <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs gap-1.5 shadow-lg shadow-indigo-500/20">
+            <Button asChild className="bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white text-xs gap-1.5 shadow-lg shadow-indigo-500/25 px-4 h-9">
               <Link to="/spatial">
-                <Orbit className="w-3.5 h-3.5 text-cyan-300" /> Open 3D Spatial Laboratory
+                <Orbit className="w-4 h-4 text-cyan-200 animate-spin-slow" /> Enter 3D Spatial Laboratory
               </Link>
             </Button>
-            <Button asChild variant="outline" className="border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-xs gap-1.5">
+            <Button asChild variant="outline" className="border-indigo-500/40 bg-indigo-950/40 hover:bg-indigo-900/60 text-indigo-300 text-xs gap-1.5 h-9">
+              <Link to="/spatial">
+                <Glasses className="w-4 h-4 text-cyan-400" /> Connect WebXR / VR
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-xs gap-1.5 h-9">
               <Link to="/ai-observatory">
-                <Bot className="w-3.5 h-3.5" /> AI Observatory
+                <Bot className="w-3.5 h-3.5 text-cyan-400" /> AI Observatory
               </Link>
             </Button>
-            <Button asChild variant="outline" className="border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-xs gap-1.5">
+            <Button asChild variant="outline" className="border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-xs gap-1.5 h-9">
               <Link to="/research-lab">
                 <FlaskConical className="w-3.5 h-3.5 text-indigo-400" /> Research Lab
               </Link>
             </Button>
-            <Button asChild variant="ghost" className="text-xs text-slate-300 hover:text-white gap-1.5">
+            <Button asChild variant="ghost" className="text-xs text-slate-300 hover:text-white gap-1.5 h-9">
               <Link to="/calculator">
                 <Calculator className="w-3.5 h-3.5" /> Scientific Calculator <ArrowRight className="w-3 h-3" />
               </Link>
