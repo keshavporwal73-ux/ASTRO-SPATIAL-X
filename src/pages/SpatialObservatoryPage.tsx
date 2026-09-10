@@ -40,6 +40,7 @@ export const SpatialObservatoryPage: React.FC = () => {
   const [isOrbitLabOpen, setIsOrbitLabOpen] = useState<boolean>(false);
   const [isCelestialPanelOpen, setIsCelestialPanelOpen] = useState<boolean>(false);
   const [isMeasurementOpen, setIsMeasurementOpen] = useState<boolean>(false);
+  const [isVRModalOpen, setIsVRModalOpen] = useState<boolean>(false);
   const [activeMeasurement, setActiveMeasurement] = useState<SpatialMeasurement | null>(null);
 
   // Natural Language AI Spatial Control Bar
@@ -164,6 +165,8 @@ export const SpatialObservatoryPage: React.FC = () => {
         showOrbits={showOrbits}
         showGrid={showGrid}
         showLabels={showLabels}
+        isVRModalOpen={isVRModalOpen}
+        onToggleVRModal={setIsVRModalOpen}
       />
 
       {/* Top Floating AI Spatial Control Command Bar */}
@@ -278,6 +281,7 @@ export const SpatialObservatoryPage: React.FC = () => {
         showLabels={showLabels}
         onToggleLabels={() => setShowLabels(!showLabels)}
         onOpenMeasurement={() => setIsMeasurementOpen(true)}
+        onOpenVRModal={() => setIsVRModalOpen(true)}
       />
     </div>
   );

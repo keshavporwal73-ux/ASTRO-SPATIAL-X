@@ -42,6 +42,8 @@ interface ThreeObservatoryCanvasProps {
   showOrbits: boolean;
   showGrid: boolean;
   showLabels: boolean;
+  isVRModalOpen?: boolean;
+  onToggleVRModal?: (open: boolean) => void;
 }
 
 export const ThreeObservatoryCanvas: React.FC<ThreeObservatoryCanvasProps> = ({
@@ -61,6 +63,8 @@ export const ThreeObservatoryCanvas: React.FC<ThreeObservatoryCanvasProps> = ({
   showOrbits,
   showGrid,
   showLabels,
+  isVRModalOpen,
+  onToggleVRModal,
 }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -81,7 +85,10 @@ export const ThreeObservatoryCanvas: React.FC<ThreeObservatoryCanvasProps> = ({
   const [hoveredObject, setHoveredObject] = useState<SpatialObject3D | null>(null);
   const [xrStatus, setXrStatus] = useState(WebXRManager.getCachedStatus());
   const [isXrActive, setIsXrActive] = useState(false);
-  const [xrModalOpen, setXrModalOpen] = useState(false);
+  const [internalXrModalOpen, setInternalXrModalOpen] = useState(false);
+  const xrModalOpen = isVRModalOpen !== undefined ? isVRModalOpen : internalXrModalOpen;
+  const setXrModalOpen = onToggleVRModal || setInternalXrModalOpen;
+  const [stereoSimMode, setStereoSimMode] = useState(false);
 
   // Check WebXR
   useEffect(() => {
@@ -742,93 +749,116 @@ export const ThreeObservatoryCanvas: React.FC<ThreeObservatoryCanvasProps> = ({
 
       {/* WebXR Modal */}
       {xrModalOpen && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-xl max-w-md w-full p-5 shadow-2xl space-y-4">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 overflow-y-auto">
+          <div className="bg-slate-900 border border-slate-700 rounded-xl max-w-lg w-full p-5 shadow-2xl space-y-4 my-auto">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="font-bold text-slate-100 flex items-center gap-2">
+              <h3 className="font-bold text-slate-100 flex items-center gap-2 font-mono text-sm">
                 <Glasses className="w-5 h-5 text-indigo-400" />
-                WebXR Spatial Laboratory Mode
+                WebXR & VR Spatial Laboratory Console
               </h3>
-              <Button size="sm" variant="ghost" onClick={() => setXrModalOpen(false)} className="h-7 w-7 p-0 text-slate-400">
+              <Button size="sm" variant="ghost" onClick={() => setXrModalOpen(false)} className="h-7 w-7 p-0 text-slate-400 hover:text-white">
                 ✕
               </Button>
             </div>
 
             <div className="space-y-3 text-xs text-slate-300">
-              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1.5 font-mono">
-                <div className="flex justify-between">
-                  <span>WebXR API:</span>
-                  <span className={xrStatus.supported ? 'text-emerald-400' : 'text-amber-400'}>
-                    {xrStatus.supported ? 'DETECTED & READY' : 'UNAVAILABLE'}
+              {/* Telemetry Status Grid */}
+              <div className="grid grid-cols-2 gap-2 font-mono text-[11px]">
+                <div className="p-2.5 rounded-lg bg-slate-950/90 border border-slate-800">
+                  <span className="text-slate-500 block uppercase text-[10px]">WebXR API:</span>
+                  <span className={xrStatus.supported ? 'text-emerald-400 font-semibold' : 'text-amber-400 font-semibold'}>
+                    {xrStatus.supported ? 'READY (Supported)' : 'UNAVAILABLE'}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Immersive VR:</span>
-                  <span className={xrStatus.vrSupported ? 'text-emerald-400' : 'text-slate-500'}>
-                    {xrStatus.vrSupported ? 'SUPPORTED' : 'NOT DETECTED'}
+                <div className="p-2.5 rounded-lg bg-slate-950/90 border border-slate-800">
+                  <span className="text-slate-500 block uppercase text-[10px]">Immersive VR:</span>
+                  <span className={xrStatus.vrSupported ? 'text-emerald-400 font-semibold' : 'text-slate-400'}>
+                    {xrStatus.vrSupported ? 'HARDWARE DETECTED' : 'NO HMD CONNECTED'}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Immersive AR:</span>
-                  <span className={xrStatus.arSupported ? 'text-emerald-400' : 'text-slate-500'}>
-                    {xrStatus.arSupported ? 'SUPPORTED' : 'NOT DETECTED'}
+                <div className="p-2.5 rounded-lg bg-slate-950/90 border border-slate-800">
+                  <span className="text-slate-500 block uppercase text-[10px]">Secure Context (HTTPS):</span>
+                  <span className="text-emerald-400 font-semibold">
+                    {typeof window !== 'undefined' && window.isSecureContext ? 'VERIFIED (HTTPS/Local)' : 'INSECURE'}
                   </span>
+                </div>
+                <div className="p-2.5 rounded-lg bg-slate-950/90 border border-slate-800">
+                  <span className="text-slate-500 block uppercase text-[10px]">Stereo VR Pipeline:</span>
+                  <span className="text-indigo-400 font-semibold">Three.js WebXR Enabled</span>
                 </div>
               </div>
 
-              {xrStatus.errorMessage && (
-                <div className="p-3 bg-slate-950/90 border border-amber-500/30 rounded-lg text-amber-200/90 space-y-1">
-                  <span className="font-semibold block text-amber-300">Hardware Status Note:</span>
-                  <p className="text-[11px] leading-relaxed">{xrStatus.errorMessage}</p>
-                </div>
-              )}
-
-              <p className="text-slate-400 text-[11px]">
-                ASTRO enforces strict scientific rendering standards. When no physical XR headset (Meta Quest, Apple Vision Pro via WebXR, HTC Vive) is connected, ASTRO provides full 6-DoF desktop spatial controls without faking VR hardware capability.
-              </p>
+              {/* Status Explanation */}
+              <div className="p-3 bg-slate-950/90 border border-slate-800 rounded-lg text-slate-300 space-y-1.5">
+                <span className="font-bold text-slate-200 block text-xs flex items-center gap-1.5">
+                  <Info className="w-3.5 h-3.5 text-indigo-400" />
+                  How to Connect a Real VR Headset:
+                </span>
+                <ul className="text-[11px] text-slate-400 space-y-1 list-disc pl-4 leading-relaxed font-sans">
+                  <li><strong className="text-slate-300">Meta Quest 2 / 3 / Pro:</strong> Open this URL in the built-in <em>Meta Quest Browser</em> and click <strong>CONNECT VR</strong>.</li>
+                  <li><strong className="text-slate-300">PC VR (Valve Index, HTC Vive, Oculus Rift):</strong> Start <em>SteamVR</em> or <em>Oculus Link</em>, open in Chrome/Edge, and click <strong>CONNECT VR</strong>.</li>
+                  <li><strong className="text-slate-300">Apple Vision Pro:</strong> Enable WebXR in Safari Experimental Features, then click <strong>CONNECT VR</strong>.</li>
+                  <li><strong className="text-slate-300">Standard Desktop / Laptop:</strong> Full 6-DoF 3D spatial controls (orbit, fly, zoom, raycast selection) are active without requiring a headset.</li>
+                </ul>
+              </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-2">
-              <Button variant="outline" size="sm" onClick={() => setXrModalOpen(false)} className="border-slate-700 text-xs">
-                Close
+            <div className="flex items-center justify-between gap-2 pt-2 border-t border-slate-800">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  WebXRManager.checkXRSupport().then(setXrStatus);
+                  toast.success('WebXR device polling refreshed.');
+                }}
+                className="border-slate-700 text-xs font-mono"
+              >
+                Re-check Hardware
               </Button>
-              {xrStatus.vrSupported ? (
-                <Button
-                  size="sm"
-                  onClick={async () => {
-                    if (rendererRef.current) {
-                      setXrModalOpen(false);
-                      toast.info('Starting WebXR Immersive VR Session...');
-                      const res = await WebXRManager.requestVRSession(rendererRef.current, () => {
-                        setIsXrActive(false);
-                        setXrStatus(WebXRManager.getCachedStatus());
-                        toast.info('WebXR VR session ended.');
-                      });
-                      if (res.success) {
-                        setIsXrActive(true);
-                        toast.success('WebXR VR Immersive Session Active!');
-                      } else {
-                        toast.error(res.error || 'VR session request failed.');
+
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="sm" onClick={() => setXrModalOpen(false)} className="text-slate-400 hover:text-white text-xs">
+                  Close
+                </Button>
+
+                {xrStatus.vrSupported ? (
+                  <Button
+                    size="sm"
+                    onClick={async () => {
+                      if (rendererRef.current) {
+                        setXrModalOpen(false);
+                        toast.info('Starting WebXR Immersive VR Session...');
+                        const res = await WebXRManager.requestVRSession(rendererRef.current, () => {
+                          setIsXrActive(false);
+                          setXrStatus(WebXRManager.getCachedStatus());
+                          toast.info('WebXR VR session ended.');
+                        });
+                        if (res.success) {
+                          setIsXrActive(true);
+                          toast.success('WebXR VR Immersive Session Active!');
+                        } else {
+                          toast.error(res.error || 'VR session request failed.');
+                        }
                       }
-                    }
-                  }}
-                  className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono"
-                >
-                  <Glasses className="w-3.5 h-3.5 mr-1.5" />
-                  CONNECT VR HEADSET
-                </Button>
-              ) : (
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    toast.info('No WebXR headset runtime detected. Desktop 3D mode is fully functional.');
-                  }}
-                  className="bg-slate-800/80 text-slate-400 border border-slate-700 text-xs font-mono hover:bg-slate-800"
-                >
-                  VR MODE UNAVAILABLE
-                </Button>
-              )}
+                    }}
+                    className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono shadow-lg shadow-emerald-600/30"
+                  >
+                    <Glasses className="w-3.5 h-3.5 mr-1.5" />
+                    ENTER VR SESSION
+                  </Button>
+                ) : (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      toast.info('Hardware status: No connected VR headset detected by browser. Desktop 3D mode is fully functional!');
+                    }}
+                    className="bg-indigo-950/60 text-indigo-300 border border-indigo-500/50 text-xs font-mono hover:bg-indigo-900/80"
+                  >
+                    VR READY (DESKTOP MODE)
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>

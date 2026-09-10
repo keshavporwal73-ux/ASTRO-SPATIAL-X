@@ -18,6 +18,7 @@ import {
   Orbit,
   Telescope,
   Atom,
+  Glasses,
 } from 'lucide-react';
 
 interface SpatialTelemetryHUDProps {
@@ -42,6 +43,7 @@ interface SpatialTelemetryHUDProps {
   showLabels: boolean;
   onToggleLabels: () => void;
   onOpenMeasurement: () => void;
+  onOpenVRModal?: () => void;
 }
 
 export const SpatialTelemetryHUD: React.FC<SpatialTelemetryHUDProps> = ({
@@ -66,6 +68,7 @@ export const SpatialTelemetryHUD: React.FC<SpatialTelemetryHUDProps> = ({
   showLabels,
   onToggleLabels,
   onOpenMeasurement,
+  onOpenVRModal,
 }) => {
   // Format simulation date from base date
   const baseDate = new Date('2026-09-09T00:00:00Z');
@@ -250,6 +253,18 @@ export const SpatialTelemetryHUD: React.FC<SpatialTelemetryHUDProps> = ({
             <Atom className="w-3.5 h-3.5 mr-1 text-cyan-400" />
             MEASURE
           </Button>
+
+          {onOpenVRModal && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={onOpenVRModal}
+              className="h-8 px-2.5 bg-indigo-950/80 border-indigo-500/50 text-indigo-300 hover:text-white text-xs font-mono"
+            >
+              <Glasses className="w-3.5 h-3.5 mr-1 text-indigo-400" />
+              CONNECT VR
+            </Button>
+          )}
         </div>
       </div>
     </div>
